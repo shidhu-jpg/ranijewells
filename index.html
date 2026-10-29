@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rani Jewellers — Today's Gold &amp; Silver Rates, 12+1 Scheme, Rate Booking</title>
+  <meta name="description" content="Rani Jewellers: live gold and silver rates, BIS hallmarked jewellery in stock, 12+1 monthly savings scheme and gold rate booking.">
+  <meta name="theme-color" content="#4a0e1c">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Rate ticker -->
+  <div class="ticker" aria-label="Today's rates">
+    <div class="ticker-track" id="ticker"></div>
+  </div>
+
+  <header class="nav" id="nav">
+    <a href="#home" class="brand">
+      <svg class="brand-mark" viewBox="0 0 48 48" aria-hidden="true">
+        <path d="M8 18 L14 8 H34 L40 18 L24 42 Z" fill="none" stroke="currentColor" stroke-width="2"/>
+        <path d="M8 18 H40 M14 8 L19 18 L24 8 L29 18 L34 8 M19 18 L24 42 L29 18" fill="none" stroke="currentColor" stroke-width="1.4"/>
+      </svg>
+      <span><b data-shop="shopName">Rani Jewellers</b><small>Since 1998 · BIS Hallmarked</small></span>
+    </a>
+    <nav class="nav-links" id="navLinks">
+      <a href="#rates">Today's Rate</a>
+      <a href="#collection">Collection</a>
+      <a href="#scheme">12 + 1 Scheme</a>
+      <a href="#booking">Rate Booking</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <a class="btn btn-gold nav-cta" href="#booking">Lock Today's Rate</a>
+    <button class="burger" id="burger" aria-label="Open menu"><span></span><span></span><span></span></button>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero" id="home">
+    <div class="hero-bg" aria-hidden="true">
+      <img class="hero-photo" src="https://images.unsplash.com/photo-1600685890506-593fdf55949b?auto=format&fit=crop&w=1600&q=75" alt="" fetchpriority="high">
+      <div class="orb o1"></div><div class="orb o2"></div>
+      <svg class="mandala" viewBox="0 0 200 200">
+        <g fill="none" stroke="currentColor" stroke-width=".6">
+          <circle cx="100" cy="100" r="96"/><circle cx="100" cy="100" r="80"/><circle cx="100" cy="100" r="58"/><circle cx="100" cy="100" r="30"/>
+          <g id="petal"><path d="M100 4 C112 30 112 50 100 70 C88 50 88 30 100 4Z"/></g>
+          <use href="#petal" transform="rotate(30 100 100)"/><use href="#petal" transform="rotate(60 100 100)"/>
+          <use href="#petal" transform="rotate(90 100 100)"/><use href="#petal" transform="rotate(120 100 100)"/>
+          <use href="#petal" transform="rotate(150 100 100)"/><use href="#petal" transform="rotate(180 100 100)"/>
+          <use href="#petal" transform="rotate(210 100 100)"/><use href="#petal" transform="rotate(240 100 100)"/>
+          <use href="#petal" transform="rotate(270 100 100)"/><use href="#petal" transform="rotate(300 100 100)"/>
+          <use href="#petal" transform="rotate(330 100 100)"/>
+        </g>
+      </svg>
+    </div>
+    <div class="container hero-grid">
+      <div class="hero-copy reveal">
+        <p class="eyebrow">✦ Trusted family jewellers ✦</p>
+        <h1>Gold that grows<br><em>with your family</em></h1>
+        <p class="lead" data-shop="tagline">Purity you can trust, designs you will treasure</p>
+        <div class="hero-actions">
+          <a href="#scheme" class="btn btn-gold">Join 12 + 1 Scheme</a>
+          <a href="#collection" class="btn btn-ghost">View Collection</a>
+        </div>
+        <ul class="trust">
+          <li><b>916</b><span>BIS Hallmark</span></li>
+          <li><b>0%</b><span>Deduction on exchange*</span></li>
+          <li><b>1 month</b><span>Free in 12+1</span></li>
+        </ul>
+      </div>
+
+      <aside class="rate-card reveal" aria-live="polite">
+        <div class="rate-card-head">
+          <span class="live-dot"></span> Today's Rate
+          <time id="rateTime"></time>
+        </div>
+        <div class="rate-card-main">
+          <span>22K Gold · per 10 g</span>
+          <strong id="heroRate">—</strong>
+          <em id="heroChange"></em>
+        </div>
+        <div class="rate-card-mini" id="heroMini"></div>
+        <a href="#booking" class="btn btn-maroon block">Book at this rate →</a>
+      </aside>
+    </div>
+  </section>
+
+  <!-- Rates board -->
+  <section class="section" id="rates">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">Updated daily by the shop</p>
+        <h2>Today's Gold &amp; Silver Rates</h2>
+        <p class="muted">Rates are exclusive of making charges and <span id="gstNote">3%</span> GST.</p>
+      </div>
+      <div class="rate-grid" id="rateGrid"></div>
+
+      <div class="calc reveal">
+        <h3>Quick Price Calculator</h3>
+        <div class="calc-row">
+          <label>Metal
+            <select id="cMetal"></select>
+          </label>
+          <label>Weight (g)
+            <input id="cWeight" type="number" min="0" step="0.01" value="10">
+          </label>
+          <label>Making (%)
+            <input id="cMaking" type="number" min="0" step="0.5" value="12">
+          </label>
+          <div class="calc-out">
+            <span>Estimated price</span>
+            <strong id="cOut">—</strong>
+            <small id="cBreak"></small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Shop by category -->
+  <section class="section section-cream cats-section">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">Handpicked for every occasion</p>
+        <h2>Shop by Category</h2>
+      </div>
+      <div class="cat-strip" id="catStrip"></div>
+    </div>
+  </section>
+
+  <!-- Collection / stock -->
+  <section class="section section-dark" id="collection">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">Live stock in our showroom</p>
+        <h2>Our Collection</h2>
+        <p class="muted">Prices update automatically with today's rate.</p>
+      </div>
+      <div class="filters" id="filters" role="tablist"></div>
+      <div class="stock-grid" id="stockGrid"></div>
+    </div>
+  </section>
+
+  <!-- 12+1 Scheme -->
+  <section class="section" id="scheme">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">Rani Swarna Bachat Yojana</p>
+        <h2>12 + 1 Gold Savings Scheme</h2>
+        <p class="muted">Pay 12 easy monthly instalments — we pay the 13th. Buy jewellery worth all 13 months.</p>
+      </div>
+
+      <div class="scheme-wrap">
+        <div class="scheme-steps reveal">
+          <figure class="scheme-photo">
+            <img src="https://images.unsplash.com/photo-1758995116383-f51775896add?auto=format&fit=crop&w=900&h=520&q=75" alt="Stack of gold bangles" loading="lazy">
+            <figcaption>Save monthly · Shop for <b>13 months' worth</b></figcaption>
+          </figure>
+          <div class="step"><span>1</span><div><b>Choose your monthly amount</b><p>Start from ₹1,000 a month.</p></div></div>
+          <div class="step"><span>2</span><div><b>Pay for 12 months</b><p>Cash, UPI or card at the shop — before the 10th of each month.</p></div></div>
+          <div class="step"><span>3</span><div><b>13th month is on us</b><p>Rani Jewellers adds one full instalment as a bonus.</p></div></div>
+          <div class="step"><span>4</span><div><b>Redeem for jewellery</b><p>Choose any gold or silver jewellery after the 12th month.</p></div></div>
+          <p class="fine">Redeemable against jewellery purchase only, not cash. Making charges and GST apply as per bill. Missed instalments extend the maturity date.</p>
+        </div>
+
+        <div class="scheme-calc reveal">
+          <h3>Plan your savings</h3>
+          <div class="chips" id="schemeChips"></div>
+          <label class="field">Monthly instalment (₹)
+            <input id="sAmount" type="number" min="500" step="500" value="5000">
+          </label>
+          <input id="sRange" type="range" min="1000" max="50000" step="500" value="5000" aria-label="Monthly amount">
+
+          <div class="scheme-result">
+            <div><span>You pay (12 months)</span><b id="sPaid">—</b></div>
+            <div class="bonus"><span>Our bonus (13th month)</span><b id="sBonus">—</b></div>
+            <div class="total"><span>Jewellery value you get</span><b id="sTotal">—</b></div>
+            <div class="grams"><span>≈ 22K gold at today's rate</span><b id="sGrams">—</b></div>
+          </div>
+
+          <div class="months" id="sMonths" aria-hidden="true"></div>
+
+          <form id="schemeForm" class="form">
+            <h4>Enrol now</h4>
+            <div class="form-row">
+              <input name="name" required placeholder="Full name" autocomplete="name">
+              <input name="phone" required placeholder="Mobile number" pattern="[0-9+ ]{10,15}" inputmode="tel" autocomplete="tel">
+            </div>
+            <div class="form-row">
+              <select name="start" id="sStart" aria-label="Start month"></select>
+              <input name="nominee" placeholder="Nominee name (optional)">
+            </div>
+            <button class="btn btn-gold block" type="submit">Enrol via WhatsApp</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Rate booking -->
+  <section class="section section-cream" id="booking">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">Protect yourself from rising prices</p>
+        <h2>Gold Rate Booking</h2>
+        <p class="muted">Pay a small advance today, lock today's rate, and buy within <b class="bDays">30</b> days — even if the rate goes up.</p>
+      </div>
+
+      <div class="booking-wrap">
+        <form class="booking-card reveal" id="bookingForm">
+          <div class="form-row">
+            <label class="field">Metal
+              <select name="metal" id="bMetal"></select>
+            </label>
+            <label class="field">Weight to book (g)
+              <input name="grams" id="bGrams" type="number" min="1" step="0.5" value="20" required>
+            </label>
+          </div>
+          <input type="range" id="bRange" min="1" max="200" step="1" value="20" aria-label="Grams">
+
+          <div class="lock">
+            <div><span>Locked rate</span><b id="bRate">—</b></div>
+            <div><span>Metal value</span><b id="bValue">—</b></div>
+            <div class="adv"><span>Advance to pay (<b id="bPct">10</b>%)</span><b id="bAdvance">—</b></div>
+            <div><span>Valid till</span><b id="bTill">—</b></div>
+          </div>
+
+          <div class="whatif">
+            <label for="bRise">If the rate rises by <b id="bRiseVal">5</b>% …</label>
+            <input type="range" id="bRise" min="1" max="20" value="5">
+            <p>you save <strong id="bSave">—</strong> on metal value.</p>
+          </div>
+
+          <div class="form-row">
+            <input name="name" required placeholder="Full name" autocomplete="name">
+            <input name="phone" required placeholder="Mobile number" pattern="[0-9+ ]{10,15}" inputmode="tel" autocomplete="tel">
+          </div>
+          <button class="btn btn-maroon block" type="submit">Book this rate on WhatsApp</button>
+          <p class="fine">Booking is confirmed once the advance is received at the shop. Advance adjusts against your final bill. Making charges &amp; GST extra.</p>
+        </form>
+
+        <div class="booking-info reveal">
+          <img class="booking-photo" src="https://images.unsplash.com/photo-1758995115785-d13726ac93f0?auto=format&fit=crop&w=900&h=420&q=75" alt="Gold choker necklace and earrings set" loading="lazy">
+          <h3>How rate booking works</h3>
+          <ol class="timeline">
+            <li><b>Book</b> — choose metal and weight, send the request.</li>
+            <li><b>Pay advance</b> — <span class="bPctTxt">10</span>% at the shop or via UPI to confirm.</li>
+            <li><b>Rate is locked</b> — you get a booking ID with your locked rate.</li>
+            <li><b>Buy anytime</b> — within <span class="bDays">30</span> days, pay the balance and take your jewellery.</li>
+          </ol>
+          <div class="rule-box">
+            <p><b>Rate went down?</b> You get the lower rate on the day of purchase.</p>
+            <p><b>Rate went up?</b> You still pay the locked rate.</p>
+          </div>
+          <div class="lookup">
+            <h4>Check your booking</h4>
+            <div class="form-row">
+              <input id="lookupId" placeholder="Booking ID e.g. RB-ABC1234">
+              <button class="btn btn-ghost-dark" id="lookupBtn" type="button">Check</button>
+            </div>
+            <div id="lookupOut" class="lookup-out"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why us -->
+  <section class="section">
+    <div class="container why">
+      <div class="why-item reveal"><svg viewBox="0 0 24 24"><path d="M12 2l3 6 6 .9-4.5 4.3 1 6.3L12 16.8 6.5 19.5l1-6.3L3 8.9 9 8z"/></svg><h4>BIS Hallmarked</h4><p>Every gold piece carries HUID hallmark for guaranteed purity.</p></div>
+      <div class="why-item reveal"><svg viewBox="0 0 24 24"><path d="M4 7h16v10H4zM4 10h16M8 14h3"/></svg><h4>Transparent Billing</h4><p>Weight, rate, making and GST shown separately on every bill.</p></div>
+      <div class="why-item reveal"><svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7M3 4v5h5"/></svg><h4>Lifetime Exchange</h4><p>Exchange old gold at today's market value.</p></div>
+      <div class="why-item reveal"><svg viewBox="0 0 24 24"><path d="M12 21s-7-4.5-7-11a7 7 0 0 1 14 0c0 6.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg><h4>Family Trust</h4><p>Serving generations of families with honest weights.</p></div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section class="section section-dark" id="contact">
+    <div class="container contact">
+      <div class="reveal">
+        <p class="eyebrow">Visit our showroom</p>
+        <h2 data-shop="shopName">Rani Jewellers</h2>
+        <ul class="contact-list">
+          <li><span>Address</span><b data-shop="address"></b></li>
+          <li><span>Phone</span><b><a data-shop-tel data-shop="phone" href="#"></a></b></li>
+          <li><span>Timings</span><b data-shop="hours"></b></li>
+        </ul>
+        <div class="hero-actions">
+          <a class="btn btn-gold" data-shop-wa href="#">Chat on WhatsApp</a>
+          <a class="btn btn-ghost" data-shop-tel href="#">Call Now</a>
+        </div>
+      </div>
+      <figure class="contact-photo reveal">
+        <img src="https://images.unsplash.com/photo-1758995115867-4ef47c98824e?auto=format&fit=crop&w=800&h=900&q=75" alt="Gold necklaces on display in a jewellery showroom" loading="lazy">
+      </figure>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <p>© <span id="year"></span> <span data-shop="shopName">Rani Jewellers</span>. All rights reserved.</p>
+      <p class="muted">Rates shown are indicative and set by the shop daily. Representative photos via <a href="https://unsplash.com" target="_blank" rel="noopener">Unsplash</a>. <a href="admin.html">Owner login</a></p>
+    </div>
+  </footer>
+
+  <a class="wa-float" data-shop-wa href="#" aria-label="Chat on WhatsApp">
+    <svg viewBox="0 0 32 32"><path fill="currentColor" d="M16 3a13 13 0 0 0-11.2 19.6L3 29l6.6-1.7A13 13 0 1 0 16 3zm0 23.6c-2 0-3.9-.5-5.6-1.5l-.4-.2-3.9 1 1-3.8-.3-.4A10.6 10.6 0 1 1 16 26.6zm5.8-7.9c-.3-.2-1.9-.9-2.2-1-.3-.1-.5-.2-.7.2l-1 1.2c-.2.2-.4.2-.7.1a8.7 8.7 0 0 1-4.3-3.8c-.3-.6.3-.5.9-1.7.1-.2 0-.4 0-.6l-1-2.4c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.2 1.1-1.2 2.8s1.2 3.2 1.4 3.5c.2.2 2.4 3.7 5.9 5.2 2.2.9 3 1 4.1.8.7-.1 1.9-.8 2.2-1.5.3-.7.3-1.4.2-1.5-.1-.1-.3-.2-.6-.3z"/></svg>
+  </a>
+
+  <div class="toast" id="toast" role="status"></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Owner Panel — Rani Jewellers</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#4a0e1c">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    body { background: var(--cream); }
+    .login { min-height: 100vh; display: grid; place-items: center; background: radial-gradient(ellipse at top, var(--maroon-2), var(--wine)); padding: 16px; }
+    .login form { background: #fff; padding: 36px; border-radius: 24px; width: min(380px, 100%); text-align: center; box-shadow: var(--shadow); }
+    .login h1 { color: var(--maroon); font-size: 2rem; margin-bottom: 6px; }
+    .login input { text-align: center; font-size: 1.4rem; letter-spacing: .5em; margin: 20px 0 14px; }
+    .login .err { color: var(--red); font-size: .85rem; min-height: 1.2em; }
+    .bar { background: var(--wine); color: var(--gold-2); padding: 14px 0; position: sticky; top: 0; z-index: 10; }
+    .bar .container { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+    .bar h1 { font-size: 1.5rem; }
+    .bar a, .bar button { margin-left: auto; font-size: .85rem; }
+    .bar button + a, .bar a + button { margin-left: 0; }
+    .tabs { display: flex; gap: 6px; overflow-x: auto; padding: 18px 0 0; }
+    .tabs button { padding: 10px 18px; border: 0; border-radius: 12px 12px 0 0; background: transparent; cursor: pointer; color: var(--muted); white-space: nowrap; }
+    .tabs button.active { background: #fff; color: var(--maroon); font-weight: 600; }
+    .panel { background: #fff; border-radius: 0 16px 16px 16px; padding: 26px; margin-bottom: 40px; box-shadow: 0 10px 30px -18px rgba(74,14,28,.3); }
+    .panel[hidden] { display: none; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 18px; }
+    .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 20px; }
+    .stat { background: var(--cream); border-radius: 14px; padding: 14px 16px; }
+    .stat span { font-size: .75rem; color: var(--muted); } .stat b { display: block; font-family: var(--serif); font-size: 1.7rem; color: var(--maroon); }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: .86rem; min-width: 640px; }
+    th, td { padding: 10px 8px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: middle; }
+    th { font-size: .72rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); font-weight: 500; }
+    td input, td select { padding: 7px 9px; border-radius: 8px; font-size: .85rem; }
+    td .num { width: 80px; }
+    .mini { padding: 6px 12px; font-size: .78rem; border-radius: 8px; border: 1px solid var(--line); background: #fff; cursor: pointer; }
+    .mini.danger { color: var(--red); border-color: #f2c4bd; }
+    .mini.ok { background: var(--green); color: #fff; border-color: var(--green); }
+    .pill { font-size: .72rem; padding: 3px 10px; border-radius: 99px; background: var(--cream); white-space: nowrap; }
+    .pill.green { background: #dcf3e6; color: var(--green); } .pill.red { background: #fde2de; color: var(--red); }
+    .row-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+    .hint { font-size: .8rem; color: var(--muted); margin: 8px 0 16px; }
+    .progress { height: 6px; background: var(--line); border-radius: 99px; overflow: hidden; min-width: 80px; }
+    .progress i { display: block; height: 100%; background: var(--gold-grad); }
+    .toolbar { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; align-items: center; }
+    .toolbar input { max-width: 260px; }
+  </style>
+</head>
+<body>
+
+  <section class="login" id="login">
+    <form id="loginForm">
+      <h1>Owner Panel</h1>
+      <p class="muted">Enter your PIN to update rates &amp; stock</p>
+      <input id="pin" type="password" inputmode="numeric" maxlength="8" autocomplete="current-password" required autofocus>
+      <p class="err" id="err"></p>
+      <button class="btn btn-maroon block">Unlock</button>
+      <p class="fine">Default PIN is 1234 — change it in Settings.</p>
+    </form>
+  </section>
+
+  <div id="app" hidden>
+    <div class="bar">
+      <div class="container">
+        <h1>Rani Jewellers · Owner Panel</h1>
+        <a class="btn btn-ghost" href="index.html" target="_blank">View site ↗</a>
+        <button class="btn btn-gold" id="logout">Lock</button>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="tabs" id="tabs">
+        <button data-tab="rates" class="active">Today's Rates</button>
+        <button data-tab="stock">Stock</button>
+        <button data-tab="bookings">Rate Bookings</button>
+        <button data-tab="scheme">12 + 1 Scheme</button>
+        <button data-tab="settings">Settings</button>
+      </div>
+
+      <!-- Rates -->
+      <section class="panel" data-panel="rates">
+        <h3>Update today's rate</h3>
+        <p class="hint">Last updated: <b id="rUpdated"></b>. When you save, the old rates are kept as "previous" so customers see the ▲ / ▼ change.</p>
+        <form id="rateForm">
+          <div class="grid">
+            <label>24K Gold (₹ per 10 g)<input name="gold24" type="number" min="0" required></label>
+            <label>22K Gold (₹ per 10 g)<input name="gold22" type="number" min="0" required></label>
+            <label>18K Gold (₹ per 10 g)<input name="gold18" type="number" min="0" required></label>
+            <label>Silver (₹ per kg)<input name="silver" type="number" min="0" required></label>
+          </div>
+          <div class="toolbar">
+            <button class="btn btn-maroon">Save &amp; publish rates</button>
+            <button type="button" class="btn btn-ghost-dark" id="auto22">Auto-fill 22K &amp; 18K from 24K</button>
+          </div>
+        </form>
+      </section>
+
+      <!-- Stock -->
+      <section class="panel" data-panel="stock" hidden>
+        <div class="stats" id="stockStats"></div>
+        <div class="toolbar">
+          <input id="stockSearch" placeholder="Search items…">
+          <button class="btn btn-maroon" id="addItem">+ Add item</button>
+        </div>
+        <p class="hint">Edit directly in the table — changes save automatically. Price is calculated from today's rate. Image URL is optional.</p>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Name</th><th>Category</th><th>Metal</th><th>Weight (g)</th><th>Making %</th><th>Qty</th><th>Hallmark</th><th>Image URL</th><th>Price today</th><th></th></tr></thead>
+          <tbody id="stockBody"></tbody>
+        </table></div>
+      </section>
+
+      <!-- Bookings -->
+      <section class="panel" data-panel="bookings" hidden>
+        <div class="stats" id="bookStats"></div>
+        <div class="toolbar">
+          <input id="bookSearch" placeholder="Search name, phone or ID…">
+          <button class="btn btn-ghost-dark" id="addBooking">+ Add walk-in booking</button>
+          <button class="btn btn-ghost-dark" id="exportBookings">Export CSV</button>
+        </div>
+        <div class="table-wrap"><table>
+          <thead><tr><th>ID</th><th>Customer</th><th>Metal / Wt</th><th>Locked rate</th><th>Today</th><th>Advance</th><th>Valid till</th><th>Status</th><th></th></tr></thead>
+          <tbody id="bookBody"></tbody>
+        </table></div>
+      </section>
+
+      <!-- Scheme -->
+      <section class="panel" data-panel="scheme" hidden>
+        <div class="stats" id="schemeStats"></div>
+        <div class="toolbar">
+          <input id="schemeSearch" placeholder="Search name, phone or ref…">
+          <button class="btn btn-ghost-dark" id="addMember">+ Add member</button>
+          <button class="btn btn-ghost-dark" id="exportScheme">Export CSV</button>
+        </div>
+        <p class="hint">Press "+ Paid" each time a member pays a monthly instalment. After 12 payments the member is ready to redeem (13× value).</p>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Ref</th><th>Member</th><th>Monthly</th><th>Start</th><th>Paid</th><th>Collected</th><th>Redeem value</th><th>Status</th><th></th></tr></thead>
+          <tbody id="schemeBody"></tbody>
+        </table></div>
+      </section>
+
+      <!-- Settings -->
+      <section class="panel" data-panel="settings" hidden>
+        <form id="settingsForm">
+          <h3>Shop details</h3>
+          <div class="grid">
+            <label>Shop name<input name="shopName" required></label>
+            <label>Tagline<input name="tagline"></label>
+            <label>Phone (display)<input name="phone"></label>
+            <label>WhatsApp (digits with 91)<input name="whatsapp" pattern="[0-9]{10,15}" required></label>
+            <label>Address<input name="address"></label>
+            <label>Timings<input name="hours"></label>
+          </div>
+          <h3>Rules</h3>
+          <div class="grid">
+            <label>Rate booking advance (%)<input name="advancePct" type="number" min="1" max="100" required></label>
+            <label>Rate lock validity (days)<input name="bookingDays" type="number" min="1" max="365" required></label>
+            <label>GST (%)<input name="gstPct" type="number" min="0" step="0.5" required></label>
+            <label>Owner PIN<input name="pin" minlength="4" maxlength="8" required></label>
+          </div>
+          <div class="toolbar">
+            <button class="btn btn-maroon">Save settings</button>
+            <button type="button" class="btn btn-ghost-dark" id="backup">Download backup</button>
+            <label class="btn btn-ghost-dark" style="flex-direction:row">Restore backup<input type="file" id="restore" accept=".json" hidden></label>
+          </div>
+        </form>
+      </section>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status"></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>
